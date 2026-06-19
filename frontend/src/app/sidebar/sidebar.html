@@ -1,0 +1,80 @@
+<div class="mobile-header">
+  <button class="hamburger-btn" (click)="toggleMobileMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <img src="images/sidebar/sidebar_header.png" alt="Logo" class="mobile-logo">
+</div>
+
+@if (isMobileMenuOpen) {
+  <div class="mobile-overlay" (click)="closeMobileMenu()"></div>
+}
+
+<aside class="sidebar" [class.collapsed]="isCollapsed" [class.mobile-open]="isMobileMenuOpen">
+  <div class="sidebar-header">
+    @if (!isCollapsed) {
+      <img src="images/sidebar/sidebar_header.png" alt="Logo" class="sidebar-logo">
+    }
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="fa-solid" [class.fa-chevron-right]="isCollapsed" [class.fa-chevron-left]="!isCollapsed"></i>
+    </button>
+    <button class="mobile-close-btn" (click)="closeMobileMenu()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <a routerLink="/profilo" routerLinkActive="active" class="user-section" (click)="closeMobileMenu()">
+    <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+    @if (!isCollapsed) {
+      <div class="user-info">
+        <span class="user-name">{{ (currentUser()?.nome ?? currentUser()?.nomeUtente) + ' ' + (currentUser()?.cognome ?? '') }}</span>
+        <span class="user-role">{{ currentUser()?.ruolo }}</span>
+      </div>
+    }
+  </a>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item" (click)="closeMobileMenu()">
+      <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+      @if (!isCollapsed) {
+        <span class="nav-label">Home</span>
+      }
+    </a>
+
+    <a routerLink="/clienti" routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">
+      <span class="nav-icon"><i class="fa-regular fa-address-card"></i></span>
+      @if (!isCollapsed) {
+        <span class="nav-label">Clienti</span>
+      }
+    </a>
+
+    <a routerLink="/destinazioni" routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">
+      <span class="nav-icon"><i class="fa-solid fa-location-dot"></i></span>
+      @if (!isCollapsed) {
+        <span class="nav-label">Destinazioni</span>
+      }
+    </a>
+
+    <a routerLink="/pacchetti" routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">
+      <span class="nav-icon"><i class="fa-solid fa-box-open"></i></span>
+      @if (!isCollapsed) {
+        <span class="nav-label">Pacchetti</span>
+      }
+    </a>
+
+    <a routerLink="/guide" routerLinkActive="active" class="nav-item" (click)="closeMobileMenu()">
+      <span class="nav-icon"><i class="fa-solid fa-map"></i></span>
+      @if (!isCollapsed) {
+        <span class="nav-label">Guide</span>
+      }
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="logout-btn" (click)="logout()">
+      <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+      @if (!isCollapsed) {
+        <span class="nav-label">Logout</span>
+      }
+    </button>
+  </div>
+</aside>

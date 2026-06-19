@@ -1,0 +1,120 @@
+<section class="page">
+  <div class="page-title">
+    <div>
+      <h2>Destinazioni</h2>
+      <p>Scopri le meraviglie d'Italia.</p>
+    </div>
+    <button type="button" class="btn-add" (click)="openModal()">+</button>
+  </div>
+
+  @if (loading) {
+    <div class="info">
+      Caricamento in corso...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error">
+      {{ errorMessage }}
+    </div>
+  } @else {
+    <div class="card-grid">
+      @for (item of destinazioni; track item.id) {
+        <div class="card" (click)="openDetail(item)">
+          @if (item.immagine) {
+            <img class="card-img" [src]="getImageUrl(item.immagine)" alt="{{ item.nome }}">
+          } @else {
+            <div class="card-img-placeholder">
+              {{ item.nome.charAt(0) }}
+            </div>
+          }
+          <div class="card-body">
+            <h3>{{ item.nome }}</h3>
+            <span class="badge">{{ item.localita }}</span>
+            <p>{{ item.descrizione }}</p>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty">Nessuna destinazione disponibile.</div>
+      }
+    </div>
+  }
+</section>
+
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Nuova Destinazione</h3>
+        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+      </div>
+      <form [formGroup]="destinazioneForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="descrizione">Descrizione</label>
+            <textarea id="descrizione" formControlName="descrizione"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="localita">Località</label>
+            <input id="localita" type="text" formControlName="localita">
+          </div>
+          <div class="form-group">
+            <label for="immagine">Immagine</label>
+            <input id="immagine" type="file" accept="image/*" (change)="onFileSelected($event)">
+            @if (imagePreview) {
+              <img class="image-preview" [src]="imagePreview" alt="Anteprima">
+            }
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Annulla</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (showDetailModal && selectedItem) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Dettaglio Destinazione</h3>
+        <button type="button" class="modal-close" (click)="closeDetail()">&times;</button>
+      </div>
+      <form [formGroup]="detailForm" (ngSubmit)="onUpdate()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="d-nome">Nome</label>
+            <input id="d-nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="d-descrizione">Descrizione</label>
+            <textarea id="d-descrizione" formControlName="descrizione"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="d-localita">Località</label>
+            <input id="d-localita" type="text" formControlName="localita">
+          </div>
+          <div class="form-group">
+            <label for="d-immagine">Immagine</label>
+            <input id="d-immagine" type="file" accept="image/*" (change)="onDetailFileSelected($event)">
+            @if (detailImagePreview) {
+              <img class="image-preview" [src]="detailImagePreview" alt="Anteprima">
+            } @else if (selectedItem.immagine) {
+              <img class="image-preview" [src]="getImageUrl(selectedItem.immagine)" alt="{{ selectedItem.nome }}">
+            }
+          </div>
+        </div>
+        <div class="modal-footer detail-footer">
+          <button type="button" class="btn-delete" (click)="onDelete()">Elimina</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,115 @@
+<section class="page">
+  <div class="page-title">
+    <div>
+      <h2>Guide</h2>
+      <p>Le nostre guide turistiche professionali.</p>
+    </div>
+    <button type="button" class="btn-add" (click)="openModal()">+</button>
+  </div>
+
+  @if (loading) {
+    <div class="info">
+      Caricamento in corso...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error">
+      {{ errorMessage }}
+    </div>
+  } @else {
+    <div class="card-grid">
+      @for (item of guide; track item.id) {
+        <div class="card" (click)="openDetail(item)">
+          <div class="card-avatar">
+            {{ item.nome.charAt(0) }}{{ item.cognome.charAt(0) }}
+          </div>
+          <div class="card-body">
+            <h3>{{ item.nome }} {{ item.cognome }}</h3>
+            <span class="badge">{{ item.specializzazione }}</span>
+            <div class="lingue">
+              <strong>Lingue:</strong>
+              @for (lingua of item.lingue; track lingua) {
+                <span class="lingua-tag">{{ lingua }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty">Nessuna guida disponibile.</div>
+      }
+    </div>
+  }
+</section>
+
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Nuova Guida</h3>
+        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+      </div>
+      <form [formGroup]="guidaForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="cognome">Cognome</label>
+            <input id="cognome" type="text" formControlName="cognome">
+            @if (formErrors['cognome']) { <span class="field-error">{{ formErrors['cognome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="specializzazione">Specializzazione</label>
+            <input id="specializzazione" type="text" formControlName="specializzazione">
+          </div>
+          <div class="form-group">
+            <label for="lingue">Lingue (separate da virgola)</label>
+            <input id="lingue" type="text" formControlName="lingue" placeholder="es. Italiano, Inglese, Francese">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Annulla</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (showDetailModal && selectedItem) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Dettaglio Guida</h3>
+        <button type="button" class="modal-close" (click)="closeDetail()">&times;</button>
+      </div>
+      <form [formGroup]="detailForm" (ngSubmit)="onUpdate()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="d-nome">Nome</label>
+            <input id="d-nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="d-cognome">Cognome</label>
+            <input id="d-cognome" type="text" formControlName="cognome">
+            @if (formErrors['cognome']) { <span class="field-error">{{ formErrors['cognome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="d-specializzazione">Specializzazione</label>
+            <input id="d-specializzazione" type="text" formControlName="specializzazione">
+          </div>
+          <div class="form-group">
+            <label for="d-lingue">Lingue (separate da virgola)</label>
+            <input id="d-lingue" type="text" formControlName="lingue" placeholder="es. Italiano, Inglese, Francese">
+          </div>
+        </div>
+        <div class="modal-footer detail-footer">
+          <button type="button" class="btn-delete" (click)="onDelete()">Elimina</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

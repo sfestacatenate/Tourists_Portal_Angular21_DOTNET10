@@ -1,0 +1,52 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-form">
+      <div class="login-form-inner">
+        <h1 class="login-title">Accedi al tuo account</h1>
+        <p *ngIf="errorMessage" class="login-error login-error-banner">{{ errorMessage }}</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form-content">
+          <div class="login-field">
+            <label for="email" class="login-label">Indirizzo Email</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              class="login-input"
+            />
+            <p *ngIf="email?.invalid && email?.touched" class="login-error">
+              Inserisci un indirizzo email valido.
+            </p>
+          </div>
+
+          <div class="login-field">
+            <label for="password" class="login-label">Password</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              autocomplete="current-password"
+              class="login-input"
+            />
+            <p *ngIf="password?.invalid && password?.touched" class="login-error">
+              La password è obbligatoria.
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            class="login-submit"
+            [disabled]="loginForm.invalid || loading"
+          >
+            {{ loading ? 'Accesso in corso...' : 'Accedi' }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="login-image">
+      <img src="images/login/login_screen.png" alt="Civita di Bagnoregio" />
+    </div>
+  </div>
+</div>

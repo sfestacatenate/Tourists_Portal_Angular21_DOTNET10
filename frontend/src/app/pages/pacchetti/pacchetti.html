@@ -1,0 +1,121 @@
+<section class="page">
+  <div class="page-title">
+    <div>
+      <h2>Pacchetti</h2>
+      <p>Scegli il pacchetto perfetto per la tua vacanza.</p>
+    </div>
+    <button type="button" class="btn-add" (click)="openModal()">+</button>
+  </div>
+
+  @if (loading) {
+    <div class="info">
+      Caricamento in corso...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error">
+      {{ errorMessage }}
+    </div>
+  } @else {
+    <div class="card-grid">
+      @for (item of pacchetti; track item.id) {
+        <div class="card" (click)="openDetail(item)">
+          <div class="card-body">
+            <div class="card-header">
+              <h3>{{ item.nome }}</h3>
+              <span class="prezzo">{{ item.prezzo | currency: 'EUR' }}</span>
+            </div>
+            <span class="badge">{{ item.destinazione }}</span>
+            <span class="durata">{{ item.durataGiorni }} giorni</span>
+            <p>{{ item.descrizione }}</p>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty">Nessun pacchetto disponibile.</div>
+      }
+    </div>
+  }
+</section>
+
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Nuovo Pacchetto</h3>
+        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+      </div>
+      <form [formGroup]="pacchettoForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="descrizione">Descrizione</label>
+            <textarea id="descrizione" formControlName="descrizione"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="prezzo">Prezzo (€)</label>
+            <input id="prezzo" type="number" formControlName="prezzo" min="0" step="0.01">
+            @if (formErrors['prezzo']) { <span class="field-error">{{ formErrors['prezzo'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="durataGiorni">Durata (giorni)</label>
+            <input id="durataGiorni" type="number" formControlName="durataGiorni" min="1">
+            @if (formErrors['durataGiorni']) { <span class="field-error">{{ formErrors['durataGiorni'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="destinazione">Destinazione</label>
+            <input id="destinazione" type="text" formControlName="destinazione">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Annulla</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (showDetailModal && selectedItem) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Dettaglio Pacchetto</h3>
+        <button type="button" class="modal-close" (click)="closeDetail()">&times;</button>
+      </div>
+      <form [formGroup]="detailForm" (ngSubmit)="onUpdate()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="d-nome">Nome</label>
+            <input id="d-nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="d-descrizione">Descrizione</label>
+            <textarea id="d-descrizione" formControlName="descrizione"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="d-prezzo">Prezzo (€)</label>
+            <input id="d-prezzo" type="number" formControlName="prezzo" min="0" step="0.01">
+            @if (formErrors['prezzo']) { <span class="field-error">{{ formErrors['prezzo'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="d-durataGiorni">Durata (giorni)</label>
+            <input id="d-durataGiorni" type="number" formControlName="durataGiorni" min="1">
+            @if (formErrors['durataGiorni']) { <span class="field-error">{{ formErrors['durataGiorni'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="d-destinazione">Destinazione</label>
+            <input id="d-destinazione" type="text" formControlName="destinazione">
+          </div>
+        </div>
+        <div class="modal-footer detail-footer">
+          <button type="button" class="btn-delete" (click)="onDelete()">Elimina</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

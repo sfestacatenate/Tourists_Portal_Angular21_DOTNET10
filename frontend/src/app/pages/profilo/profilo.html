@@ -1,0 +1,32 @@
+<section class="profilo">
+  <h1>Profilo Utente</h1>
+
+  <div class="profilo-card">
+    <div class="profilo-avatar">
+      <i class="fa-solid fa-user"></i>
+    </div>
+
+    <div class="profilo-details">
+      <div class="detail-row">
+        <span class="detail-label">Nome</span>
+        <span class="detail-value">{{ currentUser()?.nome ?? '—' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Cognome</span>
+        <span class="detail-value">{{ currentUser()?.cognome ?? '—' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Nome Utente</span>
+        <span class="detail-value">{{ currentUser()?.nomeUtente }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">{{ currentUser()?.email }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Ruolo</span>
+        <span class="detail-value">{{ currentUser()?.ruolo }}</span>
+      </div>
+    </div>
+  </div>
+</section>

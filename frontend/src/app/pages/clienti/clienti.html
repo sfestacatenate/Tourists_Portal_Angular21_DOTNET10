@@ -1,0 +1,177 @@
+<section class="page">
+  <div class="page-title">
+    <div>
+      <h2>Clienti</h2>
+      <p>Anagrafica clienti</p>
+    </div>
+    <button type="button" class="btn-add" (click)="openModal()">+</button>
+  </div>
+
+  @if (loading) {
+    <div class="info">
+      Caricamento in corso...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error">
+      {{ errorMessage }}
+    </div>
+  } @else {
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Codice fiscale</th>
+            <th>Data nascita</th>
+            <th>Email</th>
+            <th>Città</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (item of clienti; track item.id) {
+            <tr>
+              <td>{{ item.id }}</td>
+              <td>{{ item.nome }}</td>
+              <td>{{ item.cognome }}</td>
+              <td>{{ item.codiceFiscale }}</td>
+              <td>{{ item.dataNascita | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.citta }}</td>
+              <td class="actions-cell">
+                <button type="button" class="btn-icon btn-edit" (click)="openEdit(item)" title="Modifica">
+                  &#9998;
+                </button>
+                <button type="button" class="btn-icon btn-trash" (click)="confirmDelete(item)" title="Elimina">
+                  &#128465;
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty">Nessun cliente disponibile.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+@if (showModal) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Nuovo Cliente</h3>
+        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+      </div>
+      <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="cognome">Cognome</label>
+            <input id="cognome" type="text" formControlName="cognome">
+            @if (formErrors['cognome']) { <span class="field-error">{{ formErrors['cognome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="codiceFiscale">Codice Fiscale</label>
+            <input id="codiceFiscale" type="text" formControlName="codiceFiscale" maxlength="16">
+            @if (formErrors['codiceFiscale']) { <span class="field-error">{{ formErrors['codiceFiscale'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="dataNascita">Data Nascita</label>
+            <input id="dataNascita" type="date" formControlName="dataNascita">
+            @if (formErrors['dataNascita']) { <span class="field-error">{{ formErrors['dataNascita'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email">
+            @if (formErrors['email']) { <span class="field-error">{{ formErrors['email'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="citta">Città</label>
+            <input id="citta" type="text" formControlName="citta">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Annulla</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (showEditModal && selectedItem) {
+  <div class="modal-overlay" (click)="closeEdit()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Modifica Cliente</h3>
+        <button type="button" class="modal-close" (click)="closeEdit()">&times;</button>
+      </div>
+      <form [formGroup]="editForm" (ngSubmit)="onUpdate()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="e-nome">Nome</label>
+            <input id="e-nome" type="text" formControlName="nome">
+            @if (formErrors['nome']) { <span class="field-error">{{ formErrors['nome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="e-cognome">Cognome</label>
+            <input id="e-cognome" type="text" formControlName="cognome">
+            @if (formErrors['cognome']) { <span class="field-error">{{ formErrors['cognome'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="e-codiceFiscale">Codice Fiscale</label>
+            <input id="e-codiceFiscale" type="text" formControlName="codiceFiscale" maxlength="16">
+            @if (formErrors['codiceFiscale']) { <span class="field-error">{{ formErrors['codiceFiscale'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="e-dataNascita">Data Nascita</label>
+            <input id="e-dataNascita" type="date" formControlName="dataNascita">
+            @if (formErrors['dataNascita']) { <span class="field-error">{{ formErrors['dataNascita'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="e-email">Email</label>
+            <input id="e-email" type="email" formControlName="email">
+            @if (formErrors['email']) { <span class="field-error">{{ formErrors['email'] }}</span> }
+          </div>
+          <div class="form-group">
+            <label for="e-citta">Città</label>
+            <input id="e-citta" type="text" formControlName="citta">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeEdit()">Annulla</button>
+          <button type="submit" class="btn-save">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (showDeleteModal && itemToDelete) {
+  <div class="modal-overlay" (click)="closeDelete()">
+    <div class="modal modal-sm" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Conferma Eliminazione</h3>
+        <button type="button" class="modal-close" (click)="closeDelete()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Sei sicuro di voler eliminare il cliente</p>
+        <p class="confirm-name"><strong>{{ itemToDelete.nome }} {{ itemToDelete.cognome }}</strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="closeDelete()">Annulla</button>
+        <button type="button" class="btn-delete" (click)="onDelete()">Elimina</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,159 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d6a9f 50%, #4a90d9 100%);
+  color: white;
+  padding: 4rem 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/images/homepage/mountains_lake_1.png') center / cover no-repeat;
+    opacity: 0.15;
+  }
+}
+
+.hero-content {
+  position: relative;
+  max-width: 640px;
+
+  h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  p {
+    margin: 0 0 2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+}
+
+.hero-cta {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  border-radius: 0.5rem;
+  background: #f59e0b;
+  color: #1e3a5f;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.25s, transform 0.2s;
+
+  &:hover {
+    background: #fbbf24;
+    transform: translateY(-2px);
+  }
+}
+
+.gallery-section {
+  h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.75rem;
+    color: #1e3a5f;
+  }
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.gallery-card {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+
+    .card-overlay {
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    i {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.35);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  transition: background 0.3s;
+
+  i {
+    font-size: 2rem;
+    opacity: 0.85;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 2.5rem 1.25rem;
+  }
+
+  .hero-cta {
+    width: 100%;
+    text-align: center;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

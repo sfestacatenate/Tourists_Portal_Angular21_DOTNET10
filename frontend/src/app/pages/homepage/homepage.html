@@ -1,0 +1,25 @@
+<section class="homepage">
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Benvenuti su Tourist Portal</h1>
+      <p>Scopri le meraviglie d'Italia tra mare, montagna e borghi incantati. Pianifica il tuo viaggio da sogno con le nostre guide esperte.</p>
+      <a routerLink="/destinazioni" class="hero-cta">Esplora Destinazioni</a>
+    </div>
+  </header>
+
+  <section class="gallery-section">
+    <h2>Destinazioni in evidenza</h2>
+    <div class="gallery-grid">
+      @for (dest of destinazioni; track dest.nome + dest.descrizione) {
+        <div class="gallery-card">
+          <img [src]="dest.immagine" [alt]="dest.nome + ' — ' + dest.descrizione" loading="lazy" />
+          <div class="card-overlay">
+            <i [class]="dest.icona"></i>
+            <h3>{{ dest.nome }}</h3>
+            <p>{{ dest.descrizione }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</section>
